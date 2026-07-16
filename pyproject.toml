@@ -1,0 +1,22 @@
+[project]
+name = "feedback-prd-generator"
+version = "0.1.0"
+description = "User feedback analysis and PRD draft generation demo for AI product management portfolios."
+requires-python = ">=3.10"
+dependencies = [
+  "pandas>=3.0.0",
+  "streamlit>=1.59.0",
+  "plotly>=6.0.0",
+  "openpyxl>=3.1.0",
+  "xlsxwriter>=3.2.0",
+  "python-dotenv>=1.0.0",
+  "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+fetch = ["google-play-scraper>=1.2.7"]
+test = ["pytest>=9.0.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

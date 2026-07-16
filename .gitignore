@@ -1,0 +1,38 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Generated outputs and logs
+outputs/
+*.log
+
+# Downloaded/generated review data; keep only the anonymized sample
+data/*
+!data/sample_feedback.csv
+
+# Local career materials
+docs/interview_script.md
+docs/project_review.md
+docs/resume_bullets.md
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
