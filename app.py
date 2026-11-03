@@ -520,7 +520,7 @@ def main() -> None:
             accept_multiple_files=False,
         )
         st.markdown(
-            '<div class="pm-note">样例数据来自公开评论的离线沉淀，不在演示过程中实时爬取或请求外部站点。</div>',
+            '<div class="pm-note">当前内置数据为公开评论风格的演示样例，不代表已核验的公开调研；演示过程中不实时爬取外部站点。</div>',
             unsafe_allow_html=True,
         )
         st.divider()

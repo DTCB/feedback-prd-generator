@@ -1,0 +1,25 @@
+{
+  "description": "20 条演示反馈的人工参考标注，单人标注；用于检查工作流，不代表真实用户分布或模型泛化能力。部分混合诉求可能存在合理分歧。",
+  "items": [
+    {"id":"FB0003","category":"Bug","sentiment":"negative"},
+    {"id":"FB0004","category":"功能需求","sentiment":"negative"},
+    {"id":"FB0005","category":"咨询/付费问题","sentiment":"negative"},
+    {"id":"FB0007","category":"体验问题","sentiment":"negative"},
+    {"id":"FB0010","category":"Bug","sentiment":"negative"},
+    {"id":"FB0013","category":"咨询/付费问题","sentiment":"negative"},
+    {"id":"FB0014","category":"功能需求","sentiment":"neutral"},
+    {"id":"FB0017","category":"功能需求","sentiment":"negative"},
+    {"id":"FB0019","category":"体验问题","sentiment":"negative"},
+    {"id":"FB0022","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0024","category":"咨询/付费问题","sentiment":"negative"},
+    {"id":"FB0026","category":"功能需求","sentiment":"negative"},
+    {"id":"FB0027","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0029","category":"Bug","sentiment":"negative"},
+    {"id":"FB0031","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0033","category":"体验问题","sentiment":"negative"},
+    {"id":"FB0037","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0043","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0057","category":"内容质量问题","sentiment":"negative"},
+    {"id":"FB0065","category":"功能需求","sentiment":"neutral"}
+  ]
+}

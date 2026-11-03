@@ -1,0 +1,152 @@
+{
+  "mode": "rule",
+  "sample_count": 20,
+  "label_note": "20 条演示反馈的人工参考标注，单人标注；用于检查工作流，不代表真实用户分布或模型泛化能力。部分混合诉求可能存在合理分歧。",
+  "category_correct": 14,
+  "sentiment_correct": 17,
+  "elapsed_seconds": 0.016,
+  "usage": null,
+  "generated_at": "2026-10-28T03:44:19.482209+00:00",
+  "items": [
+    {
+      "id": "FB0003",
+      "expected_category": "Bug",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0004",
+      "expected_category": "功能需求",
+      "actual_category": "功能需求",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0005",
+      "expected_category": "咨询/付费问题",
+      "actual_category": "咨询/付费问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0007",
+      "expected_category": "体验问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0010",
+      "expected_category": "Bug",
+      "actual_category": "Bug",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0013",
+      "expected_category": "咨询/付费问题",
+      "actual_category": "咨询/付费问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0014",
+      "expected_category": "功能需求",
+      "actual_category": "功能需求",
+      "expected_sentiment": "neutral",
+      "actual_sentiment": "positive"
+    },
+    {
+      "id": "FB0017",
+      "expected_category": "功能需求",
+      "actual_category": "功能需求",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0019",
+      "expected_category": "体验问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0022",
+      "expected_category": "内容质量问题",
+      "actual_category": "功能需求",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0024",
+      "expected_category": "咨询/付费问题",
+      "actual_category": "咨询/付费问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0026",
+      "expected_category": "功能需求",
+      "actual_category": "功能需求",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "neutral"
+    },
+    {
+      "id": "FB0027",
+      "expected_category": "内容质量问题",
+      "actual_category": "功能需求",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0029",
+      "expected_category": "Bug",
+      "actual_category": "Bug",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0031",
+      "expected_category": "内容质量问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0033",
+      "expected_category": "体验问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0037",
+      "expected_category": "内容质量问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0043",
+      "expected_category": "内容质量问题",
+      "actual_category": "内容质量问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0057",
+      "expected_category": "内容质量问题",
+      "actual_category": "体验问题",
+      "expected_sentiment": "negative",
+      "actual_sentiment": "negative"
+    },
+    {
+      "id": "FB0065",
+      "expected_category": "功能需求",
+      "actual_category": "功能需求",
+      "expected_sentiment": "neutral",
+      "actual_sentiment": "positive"
+    }
+  ]
+}

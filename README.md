@@ -1,148 +1,111 @@
-# 用户反馈分析与 PRD 自动生成工具
+# 反馈洞察 · Feedback Lens
 
-这是一个面向产品经理 / AI 产品经理作品集的项目 Demo：从用户真实反馈出发，自动完成反馈清洗、主题归类、痛点提炼、需求池沉淀、RICE 优先级排序，并生成可继续编辑的 PRD 草稿。
+面向 AI 产品经理作品集的在线工作台：从用户反馈中发现问题，核验原始证据，人工校准需求与 RICE，再生成可编辑、可追溯的 PRD。
 
-## 项目背景
+## 现在可以体验什么
 
-产品经理在处理 App 评论、社群反馈、客服工单和用户访谈记录时，常遇到三个问题：
+- **洞察总览**：默认载入 65 条演示反馈、8 个人工整理的需求主题，所有统计来自当前工作状态。
+- **反馈分析**：搜索与筛选、原文与引用联动、修改分类和情绪、接受关联或拆分为独立需求。
+- **需求决策**：查看支持证据、调整 RICE 及依据、重新排序、确认或暂缓、比较与合并需求。
+- **PRD 工作台**：模板生成、真实模型生成和章节改写、接受前预览、Markdown 编辑和真实下载。
+- **交付**：Excel 包含当前反馈、需求、RICE、产品背景、修改记录及 PRD。
+- **会话**：当前标签页自动保存、刷新恢复、最近 15 次操作可撤销、恢复默认案例。
 
-- 反馈来源分散，信息噪声高，人工整理耗时。
-- 需求判断容易停留在“声音最大的人”，缺少统一优先级框架。
-- 从反馈到 PRD 的链路断裂，需求洞察难以快速转化为可执行方案。
+默认案例为**公开评论风格的演示样例**，不是经过核验的公开评论数据集。主题分组经过人工整理，不将预分析或模板输出冒充真实模型结果。
 
-本项目尝试用数据分析与 AI 辅助写作，把“用户反馈分析”变成一条可复用的产品工作流。
+## 技术结构
 
-## 目标岗位
-
-- 产品经理
-- AI 产品经理
-- 数据产品经理
-- 增长 / 用户体验方向产品经理
-
-## 解决的问题
-
-- 将非结构化用户反馈整理为结构化需求池。
-- 帮助产品经理快速识别高频痛点、用户情绪和核心场景。
-- 用 RICE 模型辅助需求优先级判断，减少拍脑袋排序。
-- 自动生成 PRD 初稿，提升从洞察到方案的产出效率。
-- 为面试作品集提供一个完整的 AI 产品闭环案例。
-
-## 核心功能
-
-- 反馈导入：支持本地 CSV / Excel，预留 Google Play 评论抓取能力。
-- 数据清洗：去重、空值处理、字段标准化、评论时间和评分整理。
-- 反馈分析：按主题、情绪、评分、关键词和时间趋势观察用户问题。
-- 需求池生成：把相似反馈聚合为需求条目，沉淀用户场景、痛点和机会点。
-- RICE 排序：从 Reach、Impact、Confidence、Effort 四个维度计算优先级。
-- PRD 生成：输出背景、目标、用户故事、功能范围、验收标准和风险说明。
-- 结果导出：支持导出 Excel / Markdown，便于继续加工为评审材料。
-
-## 技术栈
-
-- Python 3.10+
-- pandas：数据清洗、聚合与结构化处理
-- Streamlit：快速搭建交互式作品集 Demo
-- Streamlit 内置图表：分类分布、情绪分布和需求池展示
-- openpyxl / xlsxwriter：Excel 读写与导出
-- python-dotenv：本地环境变量管理
-- google-play-scraper：可选，用于刷新 Google Play 评论数据
-
-## 数据来源
-
-项目可使用以下数据作为输入：
-
-- 应用商店公开评论，例如 Google Play 评论。
-- 用户访谈纪要和客服工单脱敏样本。
-- 问卷开放题反馈。
-- 社群、论坛、NPS 回访问卷中的文本反馈。
-
-作品集展示时内置 `data/sample_feedback.csv`，包含 65 条围绕 AI 写作/AI 助手产品的匿名化公开评论风格样例。统一字段为：`feedback_id`、`date`、`source`、`app_name`、`channel`、`rating`、`version`、`user_type`、`module`、`feedback_text`、`thumbs_up`。
-
-如果需要刷新 Google Play 评论，可选安装抓取依赖后运行：
-
-```bash
-python scripts/fetch_reviews.py --app-id com.openai.chatgpt --app-name ChatGPT --count 100 --lang zh --country cn --output data/google_play_reviews.csv
-```
-
-## 项目结构
+前端为 React + TypeScript + Vite；后端为 FastAPI，复用 Python/pandas 分析逻辑，通过 Vercel Python Function 提供 `/api` 接口。原有 Streamlit 入口保留。
 
 ```text
-.
-├── data/                  # 样例反馈数据与中间数据
-├── docs/                  # 作品集、复盘、面试和流程文档
-├── scripts/               # 可选真实评论刷新脚本
-├── src/feedback_prd/      # 字段标准化、规则分类、RICE 和 PRD 生成逻辑
-├── tests/                 # 端到端导入、分析与 PRD 生成测试
-├── app.py                 # Streamlit 演示入口
-├── requirements.txt       # 运行依赖
-├── pyproject.toml         # 项目元信息与依赖配置
-└── README.md              # 项目说明
+web/                     React 工作台与会话逻辑
+api/index.py             Vercel / uvicorn 入口
+src/feedback_prd/        原分析逻辑、工作区、AI 校验与持久化限额
+public/demo.json         随前端发布的案例快照
+public/evaluation.json   实际执行生成的规则基线记录
+evaluation/gold.json     固定人工参考标注集
+tests/                   原有测试、接口测试与浏览器测试
+docs/web_demo.md         部署、运行边界与验收说明
 ```
 
-## 运行方式
+## 本地运行
 
-```bash
+需要 Node.js 22.12+ 和 Python 3.11+。Vercel 生产运行时选用 Python 3.12。
+
+```powershell
 python -m venv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt -r requirements-web.txt
+npm ci
 ```
 
-### 配置真实 LLM API
+在两个终端分别运行：
 
-项目支持 OpenAI 官方与 OpenAI 兼容接口。复制 `.env.example` 为 `.env`，填入自己的 Key：
-
-```env
-LLM_API_KEY=sk-your-api-key
-LLM_MODEL=gpt-4o-mini
-LLM_BASE_URL=
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn api.index:app --host 127.0.0.1 --port 8000
 ```
 
-如果使用 OpenAI 官方接口，`LLM_BASE_URL` 留空即可。如果使用兼容接口，例如 DeepSeek 或通义千问 OpenAI 兼容模式，填写对应的 `base_url` 和模型名：
-
-```env
-LLM_API_KEY=your-compatible-api-key
-LLM_MODEL=deepseek-chat
-LLM_BASE_URL=https://api.deepseek.com
+```powershell
+npm run dev
 ```
 
-应用会优先读取 `LLM_API_KEY`、`LLM_MODEL`、`LLM_BASE_URL`，同时兼容 `OPENAI_API_KEY`、`OPENAI_MODEL`、`OPENAI_BASE_URL`。请不要把真实 API Key 提交到仓库；`.env` 已被 `.gitignore` 忽略。
+浏览器打开 `http://127.0.0.1:5173`。Vite 将 `/api` 代理到本机 Python 服务。
 
-启动 Streamlit 演示：
+## 模型配置与成本
 
-```bash
-streamlit run app.py
+复制 `.env.example` 为 `.env`，配置 `LLM_API_KEY`、`LLM_MODEL` 和可选的 `LLM_BASE_URL`。兼容已有的 `OPENAI_*` 环境变量。密钥只在后端使用，不进入浏览器。
+
+Web 工作台调用阿里云百炼的 DeepSeek V4 混合思考模型时，默认设置 `enable_thinking=false`，避免推理过程挤占 PRD 的输出额度。确实需要思考模式时可设置 `LLM_ENABLE_THINKING=true`；其他服务商不会收到此专用参数。[阿里云参数说明](https://help.aliyun.com/zh/model-studio/deepseek-api)
+
+Web 工作台调用阿里云百炼的 DeepSeek V4 混合思考模型时，默认设置 `enable_thinking=false`，避免推理过程挤占 PRD 的输出额度。确实需要思考模式时可设置 `LLM_ENABLE_THINKING=true`；其他服务商不会收到此专用参数。[阿里云参数说明](https://help.aliyun.com/zh/model-studio/deepseek-api)
+
+本地开发读取现有配置；生产默认关闭实时 AI，直到同时具备：
+
+1. 有效模型配置；
+2. Upstash Redis REST 配置及独立的 `QUOTA_HASH_SECRET`；
+3. 在供应商侧设置费用上限后，显式设置 `AI_BUDGET_CONFIRMED=1`。
+
+每 IP 每日最多 3 次、全站每月最多 200 次，使用一次 Redis Lua 操作原子检查并预扣次数。失败调用也计数。Redis 不可用时拒绝实时调用，不降级到实例内计数。
+
+调用次数不等于人民币预算；100 元总预算仍需供应商侧硬限额。没有可靠费用封顶时，生产保留完整案例、人工校准和模板生成，不开放实时调用。
+
+## 验证
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q -p no:cacheprovider
+npm run build
+# 先启动前后端；Windows 默认使用已安装的 Chrome，其他环境执行 npx playwright install chromium
+npm run test:e2e
 ```
 
-运行测试：
+更新案例或重新评测规则：
 
-```bash
-python -m pytest -q
+```powershell
+.\.venv\Scripts\python.exe scripts/export_web_demo.py
+.\.venv\Scripts\python.exe scripts/evaluate_web.py --mode rule
 ```
 
-如果仅需要查看文档，可直接阅读 `README.md` 与 `docs/` 下的作品集材料。
+真实模型评测与小样本联调会发送测试文本并产生模型费用，仅在确认授权与预算后执行：
 
-## 功能截图占位
+```powershell
+.\.venv\Scripts\python.exe scripts/smoke_web_ai.py
+.\.venv\Scripts\python.exe scripts/evaluate_web.py --mode llm --output output/web/model-evaluation.json
+```
 
-> 截图 1：反馈总览 Dashboard，包括评论量、平均评分、情绪分布和高频主题。
+`evaluation/gold.json` 为自建演示集的单人参考标注，匹配结果不代表真实用户分布、通用准确率或业务成效。
 
-> 截图 2：需求池列表，包括用户痛点、对应反馈数量、RICE 得分和当前状态。
+## 继续使用原 Streamlit 应用
 
-> 截图 3：PRD 自动生成页面，包括需求背景、目标用户、功能范围和验收标准。
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-streamlit.txt
+.\.venv\Scripts\python.exe -m streamlit run app.py
+```
 
-> 截图 4：导出结果示例，包括 Excel 需求池和 Markdown PRD 草稿。
+旧版功能文档保留在 [Streamlit 历史说明](docs/streamlit_legacy.md)。
 
-## 项目亮点
+## 上线
 
-- 真实产品工作流：不是单纯做文本摘要，而是覆盖反馈分析、需求判断、PRD 生成和复盘闭环。
-- 产品方法论落地：将需求池、RICE、用户故事、验收标准等产品经理常用方法工具化。
-- AI 提效明确：AI 负责提炼、归类和草稿生成，产品经理负责判断、校准和决策。
-- 适合面试表达：能清楚展示问题定义、方案设计、数据分析、优先级判断和迭代意识。
-- 可扩展性强：后续可接入更多数据源、LLM API、协作评审流程和需求状态流转。
+部署配置在 `vercel.json`；前端构建命令为 `npm run build`，输出目录为 `dist`。Git 导入时将 Framework Preset 设为 Vite，项目根目录为仓库根目录。
 
-## 可改进方向
+推荐通过 Vercel 的 GitHub 集成连接 `DTCB/feedback-prd-generator`：生产分支 `main`，推送后自动更新生产地址；`codex/*` 等其他分支生成预览。安装命令 `npm ci`，Node.js 固定 `24.x`，Python `3.12`。本地 `.env` 和 `output/` 不上传，密钥只存 Vercel 服务端环境变量。
 
-- 接入 OpenAI / 其他大模型 API，提升主题聚类、用户故事和 PRD 生成质量。
-- 增加人工校准机制，让产品经理修正主题、情绪和 RICE 权重。
-- 增加需求状态流转，例如待评估、已立项、开发中、已上线、已复盘。
-- 增加多来源反馈合并，支持 App 评论、客服工单、问卷和社群文本统一分析。
-- 增加评估指标，例如 PRD 采纳率、人工节省时间、上线后反馈改善情况。
+完整步骤、环境变量、生产 AI 开放条件与验收限制见 [部署说明](docs/web_demo.md)。

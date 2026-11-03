@@ -14,11 +14,19 @@ __pycache__/
 htmlcov/
 
 # Build artifacts
+node_modules/
+.vercel/
+output/vercel-cli/
+output/web/deployment*.json
+playwright-report/
+test-results/
+*.tsbuildinfo
 build/
 dist/
 *.egg-info/
 
 # Generated outputs and logs
+output/
 outputs/
 *.log
 
