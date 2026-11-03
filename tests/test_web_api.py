@@ -193,6 +193,37 @@ def test_redis_error_never_falls_back_to_per_instance_quota(monkeypatch):
     assert "secret" not in error.value.message and "private" not in error.value.message
 
 
+def test_failed_calls_share_daily_quota_across_all_ai_operations(client, monkeypatch, workspace):
+    monkeypatch.delenv("VERCEL", raising=False)
+    monkeypatch.setattr(quota, "configured", lambda: False)
+    monkeypatch.setattr(web_ai, "readiness", lambda: (True, "ready"))
+    calls = []
+    def unavailable(*args):
+        calls.append(True)
+        raise RuntimeError("private provider details")
+    monkeypatch.setattr(web_ai, "call_model", unavailable)
+    quota._local.clear()
+    before = copy.deepcopy(workspace)
+    payload = {"workspace": workspace, "need_id": workspace["needs"][0]["id"], "use_llm": True}
+    try:
+        first = client.post("/api/analyze", json={"workspace": workspace, "mode": "llm", "selected_ids": [workspace["feedback"][0]["id"]]})
+        second = client.post("/api/prd", json=payload)
+        third = client.post("/api/prd", json={**payload, "action": "revise", "draft": "## 验收标准\n人工内容", "instruction": "精简"})
+        assert [response.status_code for response in (first, second, third)] == [502, 502, 502]
+        fourth = client.post("/api/prd", json=payload)
+        assert fourth.status_code == 429 and "今天" in fourth.json()["detail"]
+        assert len(calls) == 3
+        assert workspace == before
+        assert all("private" not in response.text for response in (first, second, third, fourth))
+        template = client.post("/api/prd", json={**payload, "use_llm": False})
+        rule = client.post("/api/analyze", json={"workspace": workspace, "mode": "rule"})
+        assert template.status_code == rule.status_code == 200
+        assert template.json()["used_llm"] is rule.json()["used_llm"] is False
+        assert len(calls) == 3
+    finally:
+        quota._local.clear()
+
+
 def test_monthly_quota_shared_across_different_visitors(monkeypatch):
     monkeypatch.delenv("VERCEL", raising=False)
     monkeypatch.setattr(quota, "configured", lambda: False)

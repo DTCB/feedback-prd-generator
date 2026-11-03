@@ -57,6 +57,20 @@ Upstash 只保存匿名日计数和全站月计数，不保存反馈、背景或
 
 供应商侧费用上限须单独设置，不能把 200 次请求当作 100 元预算。若没有可靠硬限额，维持生产实时 AI 关闭。超时、供应商错误、输出截断和证据校验失败均不自动重试。
 
+### 实时 AI 首次开放
+
+首期采用 **20 元/月模型预算，16 元告警**。在百炼为项目创建专用 API Key，在“费用用量 → 预算管理”设置这个 Key 的预算并开启“达到预算后立即停止”。百炼明确说明停用可能有延迟，因此预算阈值不是账单绝不超额的保证。[官方预算说明](https://help.aliyun.com/zh/model-studio/budget-management)
+
+1. 在自己的 Upstash 账号创建 `feedback-lens-quota`，选择 Free 套餐，优先新加坡区域，不启用自动付费升级；使用持久化数据库，不使用会过期的临时数据库。复制 REST URL 与可写 REST Token，不使用只读 Token。
+2. 在本地被 Git 忽略的 `.env.production.local` 中填写 Redis 的两个变量，运行 `python scripts/verify_redis_quota.py --env-file .env.production.local`。检查 PING、并发日限额、跨访客月限额和计数过期。脚本只使用 `lens:verify:<随机ID>:` 下的临时计数，完成后删除自己创建的计数，不接触正式额度；中断时临时计数在 5 分钟后过期。
+3. 在 Vercel 项目的 **Production** 环境配置上表八项变量：沿用已验证的百炼接口和模型，`LLM_ENABLE_THINKING=false`，`QUOTA_HASH_SECRET` 使用独立的 32 字节随机密钥，`AI_BUDGET_CONFIRMED` 先保持 `0`。Preview 不配置真实模型密钥或预算开关。
+4. 预算及 Redis 验证完成后，将 `AI_BUDGET_CONFIRMED=1`，重新部署当前 `main`。网站 URL 保持不变。密钥不粘贴到聊天、GitHub 或部署日志。
+5. `python scripts/verify_deployed_ai.py` 默认只检查公开状态，不消耗模型额度。加 `--live` 才会上传一条合成反馈，依次执行真实分析、生成、章节改写，再探测第四次请求是否返回每日限额 429，并检查模板仍可用。使用当天尚未消耗额度的网络运行一次，不自动重试；正常消耗 3 次模型额度，若限流失效，第四次探测也可能调用模型。
+
+检查脚本只输出状态、计数和错误类型，不输出服务地址、令牌、模型正文或原始异常内容。线上是否开放以真实验收记录为准，不因配置完成或状态为可用就宣称联调通过。
+
+需要关闭时，将 `AI_BUDGET_CONFIRMED=0` 并重新部署；紧急时先在百炼禁用项目专用 Key。规则分析、案例与模板继续可用。普通代码更新继续通过 GitHub → Vercel 自动部署。
+
 ## 4. API 与数据边界
 
 | 接口 | 行为 |
