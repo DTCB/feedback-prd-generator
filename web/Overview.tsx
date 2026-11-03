@@ -48,6 +48,6 @@ export default function Overview({ workspace, onTour, onImport, onNeed, onFeedba
         <section className="context-preview"><div className="context-preview-title"><Target size={17}/><h3>让 AI 理解产品背景</h3></div><p>{workspace.context.goal}</p><TextLink onClick={onContext}>查看与编辑背景</TextLink></section>
       </aside>
     </div>
-    <div className="page-footer"><span>每一条洞察，都可以回到用户原文。</span><span>反馈洞察 · Feedback Lens</span></div>
+    <div className="page-footer"><span>每一条洞察，都能追溯到用户原文。</span><span>反馈洞察 · Feedback Lens</span></div>
   </>;
 }

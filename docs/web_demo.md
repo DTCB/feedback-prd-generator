@@ -19,6 +19,8 @@
 
 ## GitHub 自动更新
 
+生产地址：[https://feedback-lens-six.vercel.app/](https://feedback-lens-six.vercel.app/)。Vercel 项目为 `feedback-lens`，连接仓库 `DTCB/feedback-prd-generator`。
+
 Production Branch 固定为 `main`。之后推送到 `main` 自动构建并更新同一个生产地址；其他分支自动生成独立预览。日常改动使用 `codex/*` 分支，确认预览后合并到 `main`。采用 Vercel 原生 Git 集成触发部署。
 
 首次连接完成后，在独立分支提交一处可见文案变化，检查预览的提交 SHA、构建结果和页面，再合并到 `main`，确认生产部署使用同一合并后的版本。不要将预览地址当作简历中的固定地址。

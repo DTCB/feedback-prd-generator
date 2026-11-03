@@ -2,6 +2,10 @@
 
 面向 AI 产品经理作品集的在线工作台：从用户反馈中发现问题，核验原始证据，人工校准需求与 RICE，再生成可编辑、可追溯的 PRD。
 
+**[在线演示](https://feedback-lens-six.vercel.app/)** · 免登录体验完整案例、人工校准、RICE 与 PRD 模板编辑导出。实时 AI 按服务端配置与额度状态开放。
+
+**[在线演示](https://feedback-lens-six.vercel.app/)** · 免登录体验完整案例、人工校准、RICE 与 PRD 模板编辑导出。实时 AI 按服务端配置与额度状态开放。
+
 ## 现在可以体验什么
 
 - **洞察总览**：默认载入 65 条演示反馈、8 个人工整理的需求主题，所有统计来自当前工作状态。
@@ -74,6 +78,20 @@ Web 工作台调用阿里云百炼的 DeepSeek V4 混合思考模型时，默认
 .\.venv\Scripts\python.exe -m pytest -q -p no:cacheprovider
 npm run build
 # 先启动前后端；Windows 默认使用已安装的 Chrome，其他环境执行 npx playwright install chromium
+npm run test:e2e
+```
+
+同一套浏览器测试也支持验证线上地址（会拦截真实模型请求，不消耗模型额度）：
+
+```powershell
+$env:PLAYWRIGHT_BASE_URL='https://feedback-lens-six.vercel.app'
+npm run test:e2e
+```
+
+同一套浏览器测试也支持验证线上地址（会拦截真实模型请求，不消耗模型额度）：
+
+```powershell
+$env:PLAYWRIGHT_BASE_URL='https://feedback-lens-six.vercel.app'
 npm run test:e2e
 ```
 
